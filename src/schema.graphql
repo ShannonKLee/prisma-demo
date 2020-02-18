@@ -51,7 +51,6 @@ type User {
     email: String!
     password: String!
     posts: [Post!]!
-    comments: [Comment!]!
 }
 
 type Post {

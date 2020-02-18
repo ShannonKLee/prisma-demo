@@ -18,8 +18,8 @@
     "nodemon": "^1.17.5"
   },
   "scripts": {
-    "build": "babel-node src/index.jsx",
-    "start": "nodemon src/index.jsx --exec babel-node",
+    "build": "babel-node src/index.js",
+    "start": "nodemon src/index.js --exec babel-node",
     "test": "echo \"Error: no test specified\" && exit 1",
     "get-schema": "graphql get-schema -p prisma"
   },
