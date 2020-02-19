@@ -1,6 +1,7 @@
 type Query {
     posts(query: String): [Post] 
     users(query: String): [User!]!
+    feed(offset: Int, limit: Int): [Post]
 }
 
 type Mutation {

@@ -48,6 +48,12 @@ const Query = {
         }
         return prisma.query.users(opArgs, info);
     },
+    feed(parent, args, { prisma }, info) {
+        return prisma.query.posts({
+            first: args.limit,
+            skip: args.offset,
+        }, info);
+    }
 };
 
 export default Query;

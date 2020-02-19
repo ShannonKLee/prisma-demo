@@ -1,24 +1,17 @@
-import React from 'react';
-import './App.css';
+import React, { Component } from 'react';
+import './styles.css';
+import { Feed } from './components/Feed';
+import Header from './components/Header';
 
-function App() {
-  return (
+class App extends Component {
+  render() {
+    return (
     <div className="App">
-      <header className="App-header">
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Header />
+      <Feed />
     </div>
   );
+  }
 }
 
 export default App;

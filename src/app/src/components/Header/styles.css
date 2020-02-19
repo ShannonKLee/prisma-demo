@@ -1,0 +1,12 @@
+.header {
+  width: 100%;
+  height: 100px;
+  background: lightblue;
+  box-sizing: border-box;
+  margin-bottom: 15px;
+}
+
+.title {
+  font-size: 24pt;
+  font-family: tahoma;
+}
