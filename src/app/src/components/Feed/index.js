@@ -34,6 +34,7 @@ export const Feed = () => {
         {data.feed.map(post => (
           <div>
             <h1>{post.title}</h1>
+            <h3>By {post.author.name}</h3>
             <p>{post.body}</p>
           </div>
           )
