@@ -19,10 +19,7 @@ const Mutation = {
             }
         });
 
-        return {
-            user,
-            token: createAuthToken(user.id),
-        };
+        return user;
 
         // const { name, email, age } = args.data;
         // const isEmailTaken = db.users.some(user => user.email === email);
@@ -36,14 +33,12 @@ const Mutation = {
         // db.users.push(user);
         // return user;
     },
-    async createPost(parent, args, { prisma, request }, info) {
-        const userId = getUserId(request);
-        
+    async createPost(parent, args, { prisma, request }, info) {        
         return await prisma.mutation.createPost({ 
             data: { 
                 author: {
                     connect: {
-                        id: userId
+                        id: args.data.author
                     }
                 },
                 title: args.data.title,
@@ -69,56 +64,6 @@ const Mutation = {
         // }
         // db.posts.push(post);
         // return post;
-    },
-    async createComment(parent, args, { prisma, request }, info) {
-        const postExists = await prisma.exists.Post({
-            id: args.data.post,
-            published: true
-        });
-
-        if (!postExists) {
-            throw new Error("Post does not exist");
-        }
-        
-        const userId = getUserId(request);
-        return await prisma.mutation.createComment({ 
-            data: {
-                text: args.data.text,
-                post: {
-                    connect: {
-                        id: args.data.post
-                    }
-                },
-                author: {
-                    connect: {
-                        id: userId
-                    }
-                }
-            }
-         }, info);
-        // // Validation
-        // const userExists = db.users.some((user) => user.id == args.data.author);
-        // if (!userExists) {
-        //     throw new Error('User does not exist!');
-        // }
-
-        // const isValidPost = db.posts.some((post) => (post.id == args.data.post && post.published));
-        // if (!isValidPost) {
-        //     throw new Error('Invalid post');
-        // }
-
-        // const comment = {
-        //     id: uuid(),
-        //     ...args.data,
-        // };
-        // db.comments.push(comment);
-        // pubsub.publish(`comment ${args.data.post}`, { 
-        //     comment: {
-        //         mutation: 'CREATE',
-        //         data: comment,
-        //     }
-        // });
-        // return comment;
     },
     async deleteUser(parent, args, { prisma, request }, info) {
         // const userExists = await prisma.exists.User({ id: args.id });
@@ -181,36 +126,6 @@ const Mutation = {
         //     })
         // }
         // return post;
-    },
-    async deleteComment(parent, args, { prisma, request }, info) {
-        const userId = getUserId(request);
-        const isCommentOwner = await prisma.exists.Comment({
-            id: args.id,
-            author: {
-                id: userId
-            }
-        });
-
-        if (!isCommentOwner) {
-            throw new Error("Unable to find comment");
-        }
-
-        return await prisma.mutation.deleteComment({ where: {
-            id: args.id }
-        }, info);
-        // const comment = db.comments.find((comment) => comment.id == args.id);
-        // if (!comment) {
-        //     throw new Error("Comment does not exist!");
-        // }
-
-        // db.comments = db.comments.filter(comment => comment.id != args.id);
-        // pubsub.publish(`comment ${comment.post}`, {
-        //     comment: {
-        //         mutation: 'DELETE',
-        //         data: comment,
-        //     }
-        // })
-        // return comment;
     },
     async updateUser(parent, args, { prisma, request }, info) {
         const userId = getUserId(request);
@@ -321,61 +236,6 @@ const Mutation = {
         // }
         // return post;
     },
-    async updateComment(parent, args, { prisma, request }, info) {
-        const userId = getUserId(request);
-        const isCommentOwner = await prisma.exists.Comment({
-            id: args.id,
-            author: {
-                id: userId
-            }
-        });
-
-        if (!isCommentOwner) {
-            throw new Error("Unable to find comment");
-        }
-        
-        return await prisma.mutation.updateComment({
-            where: {
-                id: args.id
-            },
-            data: args.data
-        }, info);
-        // const comment = db.comments.find(comment => comment.id = args.id);
-        // if (!comment) {
-        //     throw new Error("Comment does not exist!");
-        // }
-        // if (args.data.text) {
-        //     comment.text = args.data.text;
-        // }
-        // pubsub.publish(`comment ${comment.post}`, {
-        //     comment: {
-        //         mutation: 'UPDATE',
-        //         data: comment
-        //     }
-        // })
-        // return comment;
-    },
-    async login(parent, args, { prisma }, info) {
-        const user = await prisma.query.user({
-            where: {
-                email: args.data.email
-            }
-        });
-
-        if (!user) {
-            throw new Error("User does not exist!");
-        }
-
-        const isCorrectPassword = await bcrypt.compare(args.data.password, user.password);
-        if (!isCorrectPassword) {
-            throw new Error("Passwords do not match!");
-        }
-
-        return {
-            user,
-            token: createAuthToken(user.id),
-        };
-    }
 };
 
 export default Mutation;

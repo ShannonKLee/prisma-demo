@@ -1,0 +1,42 @@
+.itemContainer {
+  border-radius: 3px;
+  -webkit-box-shadow: 3px 10px 22px 3px rgba(158,158,158,1);
+  -moz-box-shadow: 3px 10px 22px 3px rgba(158,158,158,1);
+  box-shadow: 3px 10px 22px 3px rgba(158,158,158,1);
+
+  padding: 10px 20px;
+  margin-bottom: 40px;
+  text-align: left;
+}
+
+.postTitle {
+  font-size: 16pt;
+  font-weight: bold;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 5px;
+}
+
+img {
+  width: 5%;
+  height: 5%;
+  float: right;
+  margin-bottom: 5px;
+}
+
+.headerWrapper {
+  width: 100%;
+  display: flex;
+  float: left;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.author {
+  color: slategray;
+  text-transform: uppercase;
+}
+
+.body {
+  margin-top: 8px;
+}

@@ -10,9 +10,9 @@ export const getUserId = (request, requireAuth = true) => {
         return decoded.userId;
     }
 
-    if (requireAuth) {
-        throw new Error("Authentication required");
-    }
+    // if (requireAuth) {
+    //     throw new Error("Authentication required");
+    // }
 
     return null;
 }

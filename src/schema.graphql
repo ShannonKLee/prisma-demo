@@ -1,38 +1,20 @@
 type Query {
-    me(userId: ID!): User!
-    post(id: ID!): Post!
-    greeting(id: Int!, name: String): String!
     posts(query: String): [Post] 
-    myPosts(query: String): [Post]
-    scalarArray: [String]
-    sum(numbers: [Int]): Int
     users(query: String): [User!]!
-    comments: [Comment!]!
+    feed(offset: Int, limit: Int): [Post]
 }
 
 type Mutation {
-    createUser(data: CreateUserInput!): AuthPayload!
+    createUser(data: CreateUserInput!): User!
     createPost(data: CreatePostInput!): Post!
-    createComment(data: CreateCommentInput!): Comment!
     deleteUser: User!
     deletePost(id: ID!): Post!
-    deleteComment(id: ID!): Comment!
     updateUser(data: UpdateUserInput!): User!
     updatePost(id: ID!, data: UpdatePostInput!): Post!
-    updateComment(id: ID!, data: UpdateCommentInput!): Comment!
-    login(data: LoginInput!): AuthPayload!
 }
 
 type Subscription {
-    count: Int!
-    comment(postId: ID!): CommentSubscriptionPayload!
     post: PostSubscriptionPayload!
-    myPost: PostSubscriptionPayload!
-}
-
-input LoginInput {
-    email: String!
-    password: String!
 }
 
 type AuthPayload {
@@ -50,11 +32,7 @@ input CreatePostInput {
     title: String!
     body: String!
     published: Boolean!
-}
-
-input CreateCommentInput {
-    text: String!
-    post: ID!
+    author: ID!
 }
 
 input UpdateUserInput {
@@ -68,17 +46,12 @@ input UpdatePostInput {
     published: Boolean
 }
 
-input UpdateCommentInput {
-    text: String
-}
-
 type User {
     id: ID!
     name: String!
     email: String!
     password: String!
     posts: [Post!]!
-    comments: [Comment!]!
 }
 
 type Post {
@@ -87,24 +60,11 @@ type Post {
     body: String
     published: Boolean
     author: User
-    comments: [Comment!]!
-}
-
-type Comment {
-    id: ID!
-    text: String!
-    author: User!
-    post: Post!
 }
 
 type PostSubscriptionPayload {
     mutation: MutationType!
     node: Post!
-}
-
-type CommentSubscriptionPayload {
-    mutation: MutationType!
-    node: Comment!
 }
 
 enum MutationType {
