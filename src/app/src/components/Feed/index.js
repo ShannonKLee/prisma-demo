@@ -1,4 +1,6 @@
 import React from 'react';
+import FeedItem from './FeedItem';
+import Button from '../Button';
 import './styles.css';
 
 import { useQuery } from '@apollo/react-hooks';
@@ -32,14 +34,12 @@ export const Feed = () => {
     return (
       <div className="container">
         {data.feed.map(post => (
-          <div>
-            <h1>{post.title}</h1>
-            <h3>By {post.author.name}</h3>
-            <p>{post.body}</p>
-          </div>
+          <FeedItem post={post} />
           )
         )}
-        <button onClick={() =>
+        <Button 
+          text="Load More"
+          onClick={() =>
           fetchMore({
             variables: {
               offset: data.feed.length,
@@ -52,7 +52,7 @@ export const Feed = () => {
                 feed: [ ...prev.feed, ...fetchMoreResult.feed]
               }
             },
-        })}>Load More</button>
+        })}/>
       </div>
     );
   }
