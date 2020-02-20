@@ -1,6 +1,7 @@
 import React from 'react';
 import FeedItem from './FeedItem';
 import Button from '../Button';
+import Error from '../Error';
 import './styles.css';
 
 import { useQuery } from '@apollo/react-hooks';
@@ -26,39 +27,36 @@ export const Feed = () => {
     }
   });
 
-  if (loading) {
-    return <div className="container">Loading...</div>
-  }
-
-  if (data && data.feed) {
-    return (
-      <div className="container">
-        {data.feed.map(post => (
-          <FeedItem post={post} />
-          )
-        )}
-        <Button 
-          text="Load More"
-          onClick={() =>
-          fetchMore({
-            variables: {
-              offset: data.feed.length,
-              limit: 3,
-            },
-            updateQuery: (prev, { fetchMoreResult, ...rest }) => {
-              if (!fetchMoreResult) return prev;
-              return {
-                ...prev,
-                feed: [ ...prev.feed, ...fetchMoreResult.feed]
-              }
-            },
-        })}/>
-      </div>
-    );
-  }
   return (
     <div className="container">
-      Hello there!
+      {loading && <span>Loading...</span>}
+      {(data && data.feed) && 
+        (
+          <div>
+            {data.feed.map(post => (
+              <FeedItem post={post} />
+            ))}
+            <Button 
+              text="Load More"
+              onClick={() =>
+              fetchMore({
+                variables: {
+                  offset: data.feed.length,
+                  limit: 3,
+                },
+                updateQuery: (prev, { fetchMoreResult, ...rest }) => {
+                  if (!fetchMoreResult) return prev;
+                  return {
+                    ...prev,
+                    feed: [ ...prev.feed, ...fetchMoreResult.feed]
+                  }
+                },
+            })}
+          />
+          </div>
+        )
+      }
+      {error && <Error msg="Something went wrong! Please try again later."/>}
     </div>
-  )
+  );
 };

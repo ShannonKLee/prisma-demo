@@ -1,0 +1,8 @@
+.errorContainer {
+  width: 100%;
+  background: pink;
+  border: 1px solid red;
+  padding: 15px 0;
+  text-align: center;
+  font-size: 10pt;
+}
